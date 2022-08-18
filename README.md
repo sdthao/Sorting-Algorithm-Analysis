@@ -40,7 +40,7 @@ Using gnuplot:
 
 Using SDL:
 
-- All necessary files located in src; however, here is the [link]((https://www.libsdl.org/)) for those who'd like to download to library.
+- All necessary files located in src; however, here is the [link](https://www.libsdl.org/)) for those who'd like to download the library.
 - The use of SDL adds O(n) to the sort; therefore, is only used for visualization.  ```sort_SDL.cpp``` for SDL use
 ## Usage
 - gnuplot
