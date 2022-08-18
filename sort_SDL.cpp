@@ -152,6 +152,3 @@ void printVec(std::vector<int>& vec) {
     }
     cout << "]\n";
 }
-
-
-// #endif
