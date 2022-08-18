@@ -42,7 +42,7 @@ Using SDL:
 
 - All necessary files located in src; however, here is the [link](https://www.libsdl.org/) for those who'd like to download the library.
 - The use of SDL adds O(n) to sorting; therefore, it should only used for visualization. To use, compile ```sort_SDL.cpp```.
-- Visit ```genSDL.h``` for implementations.
+- Visit [genSDL.h](https://github.com/sdthao/Sorting-Algorithm-Analysis/blob/main/src/include/SDL2/genSDL.h) for implementations.
 
 ## Usage
 - gnuplot
