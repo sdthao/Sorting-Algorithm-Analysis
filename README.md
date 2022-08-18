@@ -41,7 +41,9 @@ Using gnuplot:
 Using SDL:
 
 - All necessary files located in src; however, here is the [link](https://www.libsdl.org/) for those who'd like to download the library.
-- The use of SDL adds O(n) to the sort; therefore, is only used for visualization.  ```sort_SDL.cpp``` for SDL use
+- The use of SDL adds O(n) to sorting; therefore, it should only used for visualization. To use, compile ```sort_SDL.cpp```.
+- Visit ```genSDL.h``` for implementations.
+
 ## Usage
 - gnuplot
     - Make sure the file is in your working directory on the gnuplot terminal
