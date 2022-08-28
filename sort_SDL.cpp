@@ -38,57 +38,57 @@ const std::string line = "-"+(string(60,'-')+='\n');    //< Header
 ///                      Main Function
 /// ----------------------------------------------------------------------------
 int main (int argc, char* argv[]) {
-    //
-    const char* options[6] = {"Bubble Sort", 
-                            "Insertion Sort", 
-                            "Selection Sort",
-                            "Merge Sort",
-                            "Quick Sort",
-                            "To end the program"};
-    // Entry prompt
-    cout << "This program generates a graphical representation of the following:\n";
+     //
+     const char* options[6] = {"Bubble Sort", 
+                             "Insertion Sort", 
+                             "Selection Sort",
+                             "Merge Sort",
+                             "Quick Sort",
+                             "To end the program"};
+     // Entry prompt
+     cout << "This program generates a graphical representation of the following:\n";
 
-    for(int l = 0; l < 6; l++) {
-        cout << l + 1 << " => " << options[l] << '\n';
-    }
+     for(int l = 0; l < 6; l++) {
+         cout << l + 1 << " => " << options[l] << '\n';
+     }
 
-    sleep(1);
+     sleep(1);
 
-    while(cin.good()) {
-        // User prompt
-        cout << line + "Please select from the options above: ";
-        // User input
-        int choice = 0;
-        cin >> choice;
+     while(cin.good()) {
+         // User prompt
+         cout << line + "Please select from the options above: ";
+         // User input
+         int choice = 0;
+         cin >> choice;
 
-        if(choice == 5) {
-            cout << line + "\nProgram ended." + line;
-            break;
-        }
-        else if(choice > 0 && choice < 5) {
-            std::vector<int> vector;        // Container to sort
-            randomFill(vector);             // Randomly fill vector
-            sleep(2);
+         if(choice == 6) {
+             cout << line + "\nProgram ended.";
+             break;
+         }
+         else if(choice > 0 && choice < 5) {
+             std::vector<int> vector;        // Container to sort
+             randomFill(vector);             // Randomly fill vector
+             sleep(2);
 
-            // Print to ensure random
-            cout << '\n' + line+"Vector generated and randomly filled\n\n";
-            printVec(vector);
+             // Print to ensure random
+             cout << '\n' + line+"Vector generated and randomly filled\n\n";
+             printVec(vector);
 
-            // Generate SDL window               
-            cout << line + line + options[choice] +
-            " visual generating...\n" + "Note: Ctrl-C to end\n" +
-            "The program will end when visual is completed.\n" + line;
-            sleep(4);
-            gen(vector, choice);
-            break;
+             // Generate SDL window               
+             cout << line + line + options[choice] +
+             " visual generating...\n" + "Note: Ctrl-C to end\n" +
+             "The program will end when visual is completed.\n" + line;
+             sleep(4);
+             gen(vector, choice);
+             break;
 
-        }
-        else {
-            cout << line + "Error, try again\n" + line;
-            sleep(2);
-        }
-    }
-
+         }
+         else {
+             cout << line + "Error, try again\n" + line;
+             sleep(2);
+         }
+     }
+    
     return EXIT_SUCCESS;
 }
 
@@ -115,7 +115,6 @@ void gen(std::vector<int> vec, int choice) {
             qsortSDL(vec);
             break;
         default:
-            cout << "Error with SDL genrating.\n";
             break;
     }
 }

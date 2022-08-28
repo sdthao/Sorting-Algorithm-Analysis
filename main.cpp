@@ -231,20 +231,20 @@ void bubble_sort (std::vector<int>& vector) {
     // Temp memory for smaller vector element.
     int temp;
 
-    // Iterate through the vector.
-    for (auto iterator = vector.begin(); iterator < vector.end(); iterator++) {
-        for (auto index = vector.begin(); index < vector.end() - 1; index++) {
-            // If the current index is greater than the adjacent index.
-            if (*index > *(index + 1)) {
-                // Temporarily store the larger value.
-                temp = *index;
-                // Swap values
-                *index = *(index + 1);
-                // Assign larger value to the right
-                *(index + 1) = temp;
-            }
-        }
-    }
+     // Iterate through the vector.
+     for (auto iterator = vector.begin(); iterator < vector.end(); iterator++) {
+         for (auto index = vector.begin(); index < vector.end() - 1; index++) {
+             // If the current index is greater than the adjacent index.
+             if (*index > *(index + 1)) {
+                 // Temporarily store the larger value.
+                 temp = *index;
+                 // Swap values
+                 *index = *(index + 1);
+                 // Assign larger value to the right
+                 *(index + 1) = temp;
+             }
+         }
+     }
 }
 
 /// ----------------------------------------------------------------------------
