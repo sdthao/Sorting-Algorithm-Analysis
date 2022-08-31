@@ -65,7 +65,7 @@ int main (int argc, char* argv[]) {
              cout << line + "\nProgram ended.";
              break;
          }
-         else if(choice > 0 && choice < 5) {
+         else if(choice > 0 && choice <= 5) {
              std::vector<int> vector;        // Container to sort
              randomFill(vector);             // Randomly fill vector
              sleep(2);
