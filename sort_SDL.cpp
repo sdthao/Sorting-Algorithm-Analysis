@@ -1,19 +1,15 @@
 /// @file: genSDL.cpp
 /// @author: Sao Thao
-/// @date: 2022-10-5
+/// @date: 2022-31-08
 /// @brief: This program utilizes the author defined genSDL.h
 /// file to implement the SDL API for displaying a graphical
 /// representation of common sorting algorithms.
-/// @note: All functions can be invoked statically.
 /// @note: genSDL.h located: /src/include/genSDL.h
-
 
 #include <iostream>
 #include <random>
 #include <unistd.h>
 #include <SDL2\genSDL.h>
-
-using namespace std;
 
 /// ----------------------------------------------------------------------------
 ///                      Prototype Function(s)
@@ -21,13 +17,6 @@ using namespace std;
 void randomFill(std::vector<int>& vec);
 void printVec(std::vector<int>& vec);
 void gen(std::vector<int> vec, int choice);
-
-// Inline function declarations
-inline static void bubbleSDL(std::vector<int>& vector) {SDL_bubble_sort(vector);}
-inline static void insertSDL(std::vector<int>& vector) {SDL_insertion_sort(vector);}
-inline static void selectSDL(std::vector<int>& vector) {SDL_selection_sort(vector);}
-inline static void qsortSDL(std::vector<int>& vector) {SDL_quick_sort(vector);}
-inline static void msortSDL(std::vector<int>& vector) {SDL_merge_sort(vector);}
 
 /// ----------------------------------------------------------------------------
 ///                      Global Constants
@@ -46,23 +35,23 @@ int main (int argc, char* argv[]) {
                              "Quick Sort",
                              "To end the program"};
      // Entry prompt
-     cout << "This program generates a graphical representation of the following:\n";
+     std::cout << "This program generates a graphical representation of the following:\n";
 
      for(int l = 0; l < 6; l++) {
-         cout << l + 1 << " => " << options[l] << '\n';
+         std::cout << l + 1 << " => " << options[l] << '\n';
      }
 
      sleep(1);
 
      while(cin.good()) {
          // User prompt
-         cout << line + "Please select from the options above: ";
+         std::cout << line + "Please select from the options above: ";
          // User input
          int choice = 0;
-         cin >> choice;
+         std::cin >> choice;
 
          if(choice == 6) {
-             cout << line + "\nProgram ended.";
+             std::cout << line + "\nProgram ended.";
              break;
          }
          else if(choice > 0 && choice <= 5) {
@@ -100,19 +89,19 @@ void gen(std::vector<int> vec, int choice) {
     // Generate SDL on user request
     switch(choice) {
         case 1:
-            bubbleSDL(vec);
+            SDL_bubble_sort(vec);
             break;
         case 2:
-            insertSDL(vec);
+            SDL_insertion_sort(vec);
             break;
         case 3:
-            selectSDL(vec);
+            SDL_selection_sort(vec);
             break;
         case 4:
-            msortSDL(vec);
+            SDL_merge_sort(vec);
             break;
         case 5:
-            qsortSDL(vec);
+            SDL_quick_sort(vec);
             break;
         default:
             break;
@@ -143,11 +132,11 @@ void printVec(std::vector<int>& vec) {
     // Space between each elements, the comma an space.
     char separator[] {'\0','\0'};
     // Prints the opening bracket.
-    cout << '[';
+    std::cout << '[';
     // Print the vector's contents
     for(auto& element : vec) {
-        cout << separator << element;
+        std::cout << separator << element;
         *separator = ',';
     }
-    cout << "]\n";
+    std::cout << "]\n";
 }
