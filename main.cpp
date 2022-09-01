@@ -1,11 +1,10 @@
-/// @file: sort.cpp
 /// @author: Sao Thao
 /// @date: 2022-10-02
 /// @brief: This program implements common sorting algorithms and
 /// uses the std::chrono function to time the duration it takes to
 /// iterate through each vector of size defined by the user.
 /// @note: Option to print results for graphical representation
-/// plotting with API's such as gnuplot.
+/// with plotting API's such as gnuplot.
 /// @note: http://www.gnuplot.info/
 
 #include <iostream>
