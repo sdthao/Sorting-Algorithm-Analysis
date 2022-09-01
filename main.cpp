@@ -16,8 +16,9 @@
 #include <numeric>
 #include <fstream>
 #include <cassert>
-#include <cctype>
 #include <unistd.h>
+#include <Sort\Sort.h>
+
 
 using namespace std;
 
@@ -37,28 +38,21 @@ struct sor_algorithms {
 /// ----------------------------------------------------------------------------
 ///                      Prototype Function(s)
 /// ----------------------------------------------------------------------------
-void test_run();
+void test_runs();
 void gen_header();
 bool user_process(int option);
-void run_benchmark(int begin, int end);
-bool print_benchmark(int begin, int end);
+void run_benchmark(int start, int end);
+bool print_benchmark(int start, int end);
 void randFill (std::vector<int>& vector);
-void bubble_sort (std::vector<int>& vector);
-void selection_sort (std::vector<int>& vector);
-void insertion_sort (std::vector<int>& vector);
-int partition(std::vector<int>& vector, int first, int last);
-void quick_sort (std::vector<int>& vector, int first, int last);
-void merge(std::vector<int>& vector, int first, int split,int last);
-void merge_sort (std::vector<int>& vector, int first, int last);
 double measure(std::vector<int>& vector, const Function& function);
 
 // Inline function declarations
-inline void mergeSort(std::vector<int>& vector)
-{merge_sort(vector, 0, vector.size() -1);}
-inline void quickSort(std::vector<int>& vector)
-{quick_sort(vector, 0, vector.size() -1);}
-inline void std_sort (std::vector<int>& vector)
-{std::sort(vector.begin(),vector.end());}
+inline void bubbleSort(std::vector<int>& vector) { Sort::bubble_sort(vector); }
+inline void selectionSort(std::vector<int>& vector) { Sort::insertion_sort(vector); }
+inline void insertionSort(std::vector<int>& vector) { Sort::selection_sort(vector); }
+inline void mergeSort(std::vector<int>& vector) { Sort::merge_sort(vector, 0, vector.size() -1);}
+inline void quickSort(std::vector<int>& vector) { Sort::quick_sort(vector, 0, vector.size() -1);}
+inline void std_sort (std::vector<int>& vector) {std::sort(vector.begin(),vector.end());}
 
 // Overload operator function
 std::ostream& operator<< (std::ostream& output, const std::vector<int>& vec);
@@ -73,9 +67,9 @@ const std::string line = "-"+(string(56,'-')+='\n');    //< Header
 
 // Set of sorting algorithms to be benchmarked
 static const std::vector<sor_algorithms> ALGORITHMS = {
-    {"Bubble:    ", &bubble_sort},
-    {"Selection: ", &selection_sort},
-    {"Insertion: ", &insertion_sort},
+    {"Bubble:    ", &bubbleSort},
+    {"Selection: ", &selectionSort},
+    {"Insertion: ", &insertionSort},
     {"MergeSort: ", &mergeSort},
     {"QuickSort: ", &quickSort},
     {"std::sort: ", &std_sort},
@@ -158,7 +152,7 @@ bool user_process(int option){
         case 1:
             // Execute test run
             cout << "Simulation of size 10 unsorted vector executed.\n" + line;
-            test_run();
+            test_runs();
 
             break;
         // Option 2: Run benchmark test
@@ -224,225 +218,6 @@ bool user_process(int option){
 }
 
 /// ----------------------------------------------------------------------------
-/// Sorts a vector using the bubble sort algorithm.
-/// @param [in] vector The vector to sort.
-/// ----------------------------------------------------------------------------
-void bubble_sort (std::vector<int>& vector) {
-    // Temp memory for smaller vector element.
-    int temp;
-
-     // Iterate through the vector.
-     for (auto iterator = vector.begin(); iterator < vector.end(); iterator++) {
-         for (auto index = vector.begin(); index < vector.end() - 1; index++) {
-             // If the current index is greater than the adjacent index.
-             if (*index > *(index + 1)) {
-                 // Temporarily store the larger value.
-                 temp = *index;
-                 // Swap values
-                 *index = *(index + 1);
-                 // Assign larger value to the right
-                 *(index + 1) = temp;
-             }
-         }
-     }
-}
-
-/// ----------------------------------------------------------------------------
-/// Sorts a vector using the selection sort algorithm.
-/// @param [in] vector The vector to sort.
-/// ----------------------------------------------------------------------------
-void selection_sort (vector<int>& vector) {
-    // Temp memory to hold smaller value.
-    int temp;
-
-    // Iterate through the vector.
-    for (auto iterator = vector.begin(); iterator < vector.end() - 1; iterator++) {
-        // Selected value to compare.
-        std::vector<int>::iterator selected = iterator;
-
-        for (auto index = iterator + 1; index < vector.end(); index++) {
-            // If the current value is smaller than the selected value.
-            if (*index < *selected) {
-                // Reassign the selected index with the smaller value.
-                selected = index;
-            }
-        }
-        // Temp store smaller value.
-        temp = *selected;
-        // Move the smaller value to the left.
-        *selected = *iterator;
-        // Move the larger value to the right. 
-        *iterator = temp;
-    }
-}
-
-/// ----------------------------------------------------------------------------
-/// Sorts a vector using the insertion sort algorithm.
-/// @param [in] vector The vector to sort.
-/// ----------------------------------------------------------------------------
-void insertion_sort (vector<int>& vector) {
-    // Temp memory to hold smaller value.
-    int temp;
-
-    // Iterate through the vector.
-    for (auto iteration = vector.begin() + 1; iteration < vector.end(); iteration++) {
-        // If the current value is smaller than the value to the left.
-        if (*iteration < *(iteration - 1)) {
-            // Store the current smaller value.
-            temp = *iteration;
-            // Store the index of the smaller value.
-            std::vector<int>::iterator index = iteration;
-
-            // While at the location of the smaller value
-            // iterate the vector backwards sorting.
-            while (index > vector.begin() && *(index - 1) > temp) {
-                // Move the larger number to the right.
-                *index = *(index - 1);
-                // Iterate down the vector.
-                index--;
-            }
-            // Move smaller value to the left.
-            *index = temp;  
-        }
-    }
-}
-
-/// ----------------------------------------------------------------------------
-/// Sorts a vector using the merge sort algorithm.
-/// @param [in] first The beginning of the range of elements to sort.
-/// @param [in] last The end of the range of elements to sort.
-/// ----------------------------------------------------------------------------
-void merge_sort(vector<int>& vec, int first, int last) {
-    if(first < last) {
-        int split = (first + (last - first)/2);     // Index to split list
-
-        // Split left side
-        merge_sort(vec, first, split);
-        // Split right side
-        merge_sort(vec, split + 1, last);
-
-        // Merge lists
-        merge(vec, first, split, last);
-    }
-}
-
-/// ----------------------------------------------------------------------------
-/// Performs merging of merge sort.
-/// @param [in] first The beginning of the range of elements to sort.
-/// @param [in] split The middle index of the vector.
-/// @param [in] last The end of the range of elements to sort.
-/// ----------------------------------------------------------------------------
-void merge(vector<int>& vec, int first, int split,int last) {
-    int n1 = split - first + 1;     // Index of left side
-    int n2 = last - split;          // Index of right side
-    int Left[n1];                   // Left split list
-    int Right[n2];                  // Right split list
-
-    // Fill left list
-    for(int i = 0; i < n1; i++) {
-        Left[i] = vec[first + i];
-    }
-    // Fill right list
-    for(int j = 0; j < n2; j++) {
-        Right[j] = vec[split + 1 + j]; 
-    }
-
-    int leftIndex = 0;          // Left list index
-    int rightIndex = 0;         // Right list index
-    int vecIndex = first;       // Vector index
-
-    while(leftIndex < n1 && rightIndex < n2) {
-        // Sort vector with smaller value from left container.
-        if(Left[leftIndex] <= Right[rightIndex]) {
-            vec[vecIndex] = Left[leftIndex];
-            leftIndex++;
-        }
-        // Sort vector with smaller value from right container.
-        else {
-            vec[vecIndex] = Right[rightIndex];
-            rightIndex++;
-        }
-        vecIndex++;
-    }
-
-    // Insert remaining elements from left container.
-    while (leftIndex < n1) {
-        vec[vecIndex] = Left[leftIndex];
-        leftIndex++;
-        vecIndex++;
-    }
-    // Insert remaining elements from right container.
-    while (rightIndex < n2) {
-        vec[vecIndex] = Right[rightIndex];
-        rightIndex++;
-        vecIndex++;
-    }
-}
-
-/// ----------------------------------------------------------------------------
-/// Performs partitioning of quick sort.
-/// @param [in] first The beginning of the range of elements to sort.
-/// @param [in] last The end of the range of elements to sort.
-/// @note First index is always chosen as pivot.
-/// @returns the index to the partitioned value.
-/// ----------------------------------------------------------------------------
-int partition(vector<int>& vec, int first, int last) {
-    int pivot = vec[first];     // First index as pivot
-    int count = 0;              // Index counter
-
-    // Find index of smallest and update pivot
-    for (int i = first + 1; i <= last; i++) {
-        if (vec[i] <= pivot) {
-            count++;
-        }
-    }
- 
-    int partIndex = first + count;     // Index to divide
-
-    swap(vec[partIndex], vec[first]);  // Assign smallest index
- 
-    int leftIndex = first;       // Left index
-    int rightIndex = last;       // Right index
- 
-    while (leftIndex < partIndex && rightIndex > partIndex) {
-        // Find index to sort from left side of pivot
-        while (vec[leftIndex] <= pivot) {
-            leftIndex++;
-        }
-        // Find index to sort from right side of pivot
-        while (vec[rightIndex] > pivot) {
-            rightIndex--;
-        }
-        // Sort list
-        if (leftIndex < partIndex && rightIndex > partIndex) {
-            swap(vec[leftIndex++], vec[rightIndex--]);
-        }
-    }
-
-    return partIndex;
-}
-
-/// ----------------------------------------------------------------------------
-/// Sorts a vector using the quick sort algorithm.
-/// @param [in] first The beginning of the range of elements to sort.
-/// @param [in] last The end of the range of elements to sort.
-/// ----------------------------------------------------------------------------
-void quick_sort(vector<int>& vec, int first, int last) {
-    // Base case.
-    if (first >= last) {
-        return;
-    }
-
-    // Partitioning of the vector.
-    int pivot = partition(vec, first, last);
- 
-    // Divide and sort left side from index of sorted portion.
-    quick_sort(vec, first, pivot - 1);
-    // Divide and sort right side from index of sorted portion.
-    quick_sort(vec, pivot + 1, last);
-}
-
-/// ----------------------------------------------------------------------------
 /// Fills and shuffles the elements of the vector with non-repeated numbers.
 /// @param [in] vector The vector to fill and shuffle.
 /// ----------------------------------------------------------------------------
@@ -499,22 +274,24 @@ double measure(std::vector<int>& vector, const Function& function) {
 /// ----------------------------------------------------------------------------
 /// Test run of all sorting algorithm with a size 10 vector and no time.
 /// ----------------------------------------------------------------------------
-void test_run() {
+void test_runs() {
     // Header
     cout << "Test Run:" << setw(18) << "Unsorted:";
     cout << setw(23) << "Sorted\n" << line << flush;
 
     // Execute sort algorithms with size 10 vector
-    for(auto size = 10; size <= 10; size *= 2) {
-        std::vector<int> vector(size);
-        randFill(vector);
-        for(auto run : ALGORITHMS) {
-            // Same vector to sort for fairness
-            std::vector<int> process(vector);
-            cout << run.name << process << " => ";
-            run.algorithm(process);
-            cout << process << '\n';
-        }
+    std::vector<int> vector(10);
+    randFill(vector);
+
+    for(auto run : ALGORITHMS) {
+        // Same vector to sort for fairness
+        std::vector<int> process(vector);
+        // Unsorted
+        cout << run.name << process << " => ";
+        // Execute sorts
+        run.algorithm(process);
+        // Sorted
+        cout << process << '\n';
     }
 }
 
@@ -529,8 +306,8 @@ void gen_header() {
     cout << '\n' << BAR[1] << CW << "Size: " << flush;
     
     // Print sorting algorithm names
-    for(auto func : ALGORITHMS) {
-        cout << BAR << CW2 << func.name;
+    for(auto function : ALGORITHMS) {
+        cout << BAR << CW2 << function.name;
         DIV += (DIV2);
     }
     
@@ -540,9 +317,9 @@ void gen_header() {
 /// ----------------------------------------------------------------------------
 /// Runs benchmark of sorting algorithms while printing elapsed time.
 /// ----------------------------------------------------------------------------
-void run_benchmark(int begin, int end) {
+void run_benchmark(int start, int end) {
 
-    for(auto size = begin; size <= end; size *= 2) {
+    for(auto size = start; size <= end; size *= 2) {
         std::vector<int> vector(size);
         randFill(vector);
         cout << BAR[1] << CW << size;
@@ -558,7 +335,7 @@ void run_benchmark(int begin, int end) {
 /// ----------------------------------------------------------------------------
 /// Prints benchmark data.
 /// ----------------------------------------------------------------------------
-bool print_benchmark(int begin, int end) {
+bool print_benchmark(int start, int end) {
     bool fileStatus = true;
     std::ofstream file("Sorting_Results.txt");
 
@@ -573,7 +350,7 @@ bool print_benchmark(int begin, int end) {
     file << '\n';
 
     // Run benchmark test
-    for(auto size = begin; size <= end; size *= 2) {
+    for(auto size = start; size <= end; size *= 2) {
         std::vector<int> vector(size);
         randFill(vector);
         file << CW2 << size;

@@ -47,7 +47,7 @@ private:
     // Display realtime colored sorting
     void display(std::vector<T>& vec, SDL_Renderer*& renderer, 
                  int red, int blue);
-    //
+    // Display method for quicksort
     void displayQuick(std::vector<T>& vec, SDL_Renderer*& renderer, int first, 
              int red, int blue, int pivot);
 };
@@ -198,7 +198,7 @@ void SDL_insertion_sort (std::vector<T>& vector) {
 ///  Partition portion of quick sort
 /// ----------------------------------------------------------------------------
 template <class T>
-static int partition(std::vector<T>& vector, int first, int last,
+int partition(std::vector<T>& vector, int first, int last,
                      int pivot, SDL_Renderer*& renderer) {
     int leftIndex = first;
     int rightIndex = first;
@@ -233,7 +233,7 @@ static int partition(std::vector<T>& vector, int first, int last,
 ///  Quick sort method
 /// ----------------------------------------------------------------------------
 template <class T>
-static void quick_sort (std::vector<T>& vector, int first, int last,
+void quick_sort (std::vector<T>& vector, int first, int last,
                         SDL_Renderer*& renderer) {
     // Base case.
     if (first < last) {
@@ -254,7 +254,7 @@ static void quick_sort (std::vector<T>& vector, int first, int last,
 ///  Generate quick sort using SDL
 /// ----------------------------------------------------------------------------
 template <class T>
-static void SDL_quick_sort (std::vector<T>& vector) {
+void SDL_quick_sort (std::vector<T>& vector) {
     //
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
@@ -273,7 +273,7 @@ static void SDL_quick_sort (std::vector<T>& vector) {
 ///  Merge portion of merge sort
 /// ----------------------------------------------------------------------------
 template <class T>
-static void merge(std::vector<T>& vector, int first, int split, int last,
+void merge(std::vector<T>& vector, int first, int split, int last,
                   SDL_Renderer*& renderer) {
     int n1 = split - first + 1;     // Index of left side
     int n2 = last - split;          // Index of right side
@@ -337,7 +337,7 @@ static void merge(std::vector<T>& vector, int first, int split, int last,
 ///  Merge sort method
 /// ----------------------------------------------------------------------------
 template <class T>
-static void merge_sort (std::vector<T>& vector, int first, int last,
+void merge_sort (std::vector<T>& vector, int first, int last,
                         SDL_Renderer*& renderer) {
     //
     if(first < last) {
@@ -357,7 +357,7 @@ static void merge_sort (std::vector<T>& vector, int first, int last,
 ///  Generate insertion sort using SDL
 /// ----------------------------------------------------------------------------
 template <class T>
-static void SDL_merge_sort (std::vector<T>& vector) {
+void SDL_merge_sort (std::vector<T>& vector) {
     //
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
